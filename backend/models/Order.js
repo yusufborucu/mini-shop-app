@@ -25,7 +25,7 @@ const OrderSchema = new Schema({
     }
   ],
   total_price: {
-    type: Number,
+    type: String,
     required: true
   },
   status: {

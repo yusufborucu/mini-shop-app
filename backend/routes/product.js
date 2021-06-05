@@ -19,7 +19,16 @@ router.get('/save_fake_products/:count', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const products = await Product.find({ }).limit(10);
+  const perPage = 10;
+  const page = req.query.page || 1;
+  const search = req.query.search;
+
+  let products = [];
+  let query = {};
+
+  if (search) query = { name: { $regex: search, $options: 'i' } };
+
+  products = await Product.find(query).skip((perPage * page) - perPage).limit(perPage);
 
   res.json(products);
 });

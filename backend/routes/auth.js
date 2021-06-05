@@ -20,7 +20,8 @@ router.post('/login', (req, res) => {
         if (!result) {
           res.json({ status: false, message: 'Wrong password.' });
         } else {
-          const token = jwt.sign({ email }, process.env.API_SECRET_KEY, { expiresIn: 60 });
+          let userId = user._id;
+          const token = jwt.sign({ userId }, process.env.API_SECRET_KEY, { expiresIn: 600 });
 
           res.json({ status: true, token });
         }

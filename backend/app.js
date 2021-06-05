@@ -6,6 +6,7 @@ const verifyToken = require('./middlewares/verify-token');
 
 const authRouter = require('./routes/auth');
 const productRouter = require('./routes/product');
+const basketRouter = require('./routes/basket');
 const orderRouter = require('./routes/order');
 
 require('dotenv').config();
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 
 app.use('/auth', authRouter);
 app.use('/products', productRouter);
+app.use('/baskets', verifyToken, basketRouter);
 app.use('/orders', verifyToken, orderRouter);
 
 app.listen(PORT, () => {

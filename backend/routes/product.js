@@ -19,7 +19,7 @@ router.get('/save_fake_products/:count', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const perPage = 10;
+  const perPage = 12;
   const page = req.query.page || 1;
   const search = req.query.search;
 

@@ -5,20 +5,14 @@ const server = require('../app');
 
 chai.use(chaiHttp);
 
-describe('/auth tests', () => {
-  it('/login POST', (done) => {
-    const data = {
-      email: 'user@mail.com',
-      password: '123456'
-    };
-
+describe('/products tests', () => {
+  it('/ GET', (done) => {
     chai.request(server)
-      .post('/auth/login')
-      .send(data)
+      .get('/products')
       .end((err, res) => {
         res.should.have.status(200);
-        res.body.should.have.property('token');
+        res.body.should.be.a('array');
         done();
-      })
+      });
   });
 });

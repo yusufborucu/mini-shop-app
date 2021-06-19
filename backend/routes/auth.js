@@ -21,7 +21,7 @@ router.post('/login', (req, res) => {
           res.json({ status: false, message: 'Wrong password.' });
         } else {
           let userId = user._id;
-          const token = jwt.sign({ userId }, process.env.API_SECRET_KEY, { expiresIn: 600 });
+          const token = jwt.sign({ userId }, process.env.API_SECRET_KEY, { expiresIn: 6000 });
           const role = user.role;
 
           res.json({ status: true, token, role });

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const Order = require('../models/Order');
+const Basket = require('../models/Basket');
+const Product = require('../models/Product');
 
 router.get('/', async (req, res) => {
   const user_id = req.decode.userId;
@@ -19,6 +21,9 @@ router.post('/', async (req, res) => {
   const order = new Order(data);
   await order.save();
 
+  const basket = await Basket.findOne({ user_id });
+  await basket.delete();
+
   res.json(order);
 });
 
@@ -32,7 +37,27 @@ router.get('/:id', async (req, res) => {
   const id = req.params.id;
   const order = await Order.findOne({ _id: id });
 
-  res.json(order);
+  let products = [];
+  await order.products.forEach(async (val) => {
+    let product = await Product.findOne({ _id: val });
+    products.push({
+      id: val,
+      name: product.name,
+      price: product.price
+    });
+  });
+
+  let response;
+
+  setTimeout(() => {
+    response = {
+      total_price: order.total_price,
+      status: order.status,
+      products
+    }
+
+    res.json(response);
+  }, 1000);
 });
 
 router.put('/change_order_status/:id', async (req, res) => {

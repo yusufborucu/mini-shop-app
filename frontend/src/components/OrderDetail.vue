@@ -1,6 +1,6 @@
 <template>
   <div class="order-detail-container">
-    <button class="back-btn" @click="$router.push('/')">Back</button>
+    <button class="back-btn" @click="$router.push('/orders')">Back</button>
     <h4>Order Detail</h4>
     <ul class="product-list">
       <li>Incredible Steel Tuna - 1 Qty - 625.00 $</li>
@@ -24,7 +24,7 @@
 export default {
   data() {
     return {
-      isAdmin: true
+      isAdmin: localStorage.getItem('role') == 'admin'
     }
   }
 }

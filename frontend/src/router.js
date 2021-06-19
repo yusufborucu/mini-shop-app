@@ -10,14 +10,28 @@ import Orders from './components/Orders'
 import OrderDetail from './components/OrderDetail'
 
 const routes = [
-  { path: '/', component: Home },
   { path: '/login', component: Login },
-  { path: '/basket', component: Basket },
-  { path: '/orders', component: Orders },
-  { path: '/order-detail', component: OrderDetail }
+  { path: '/', component: Home, meta: { requiresAuth: true } },  
+  { path: '/basket', component: Basket, meta: { requiresAuth: true } },
+  { path: '/orders', component: Orders, meta: { requiresAuth: true } },
+  { path: '/order-detail', component: OrderDetail, meta: { requiresAuth: true } }
 ]
 
 export const router = new VueRouter({
   mode: 'history',
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    let token = localStorage.getItem("token");
+    let role = localStorage.getItem('role');
+    if (!token || !role) {
+      next('/login');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});

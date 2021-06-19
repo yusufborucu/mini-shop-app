@@ -8,6 +8,7 @@
   import Product from './Product';
 
   export default {
+    props: ['page', 'searchText'],
     data() {
       return {
         products: []
@@ -17,7 +18,12 @@
       Product
     },
     async created() {
-      const response = await fetch('http://localhost:3000/products');
+      let response = '';
+      if (this.searchText) {
+        response = await fetch(`${process.env.VUE_APP_API_URL}/products?page=${this.page}&search=${this.searchText}`);
+      } else {
+        response = await fetch(`${process.env.VUE_APP_API_URL}/products?page=${this.page}`);
+      }      
       const products = await response.json();
       this.products = products;
     }

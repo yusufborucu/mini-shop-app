@@ -1,6 +1,7 @@
 <template>
   <div class="orders-container">
-    <button class="back-btn" @click="$router.push('/')">Back</button>
+    <button class="logout-btn" v-if="isAdmin" @click="logout()">Logout</button>
+    <button class="back-btn" v-if="!isAdmin" @click="$router.push('/')">Back</button>
     <h4>Orders</h4>
     <ul class="order-list">
       <li>
@@ -27,7 +28,15 @@
 export default {
   data() {
     return {
-      isAdmin: false
+      isAdmin: localStorage.getItem('role') == 'admin'
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+
+      window.location.href = 'login';
     }
   }
 }
@@ -73,6 +82,16 @@ export default {
     background: green;
     color: white;
     margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .logout-btn {
+    margin-top: 10px;
+    padding: 10px;
+    background: red;
+    color: white;
+    border: 1px solid #fff;
+    border-radius: 5px;
     cursor: pointer;
   }
 </style>

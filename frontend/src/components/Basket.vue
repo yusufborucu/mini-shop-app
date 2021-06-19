@@ -4,10 +4,10 @@
     <h4>Basket</h4>
     <ul class="basket-list">
       <li v-for="item in basketList" v-bind:key="item._id">
-        {{ item.name }} - {{ item.quantity }} Qty - {{ item.quantity * item.price }} $
+        {{ item.name }} - {{ item.price }} $
       </li>
     </ul>
-    <span class="total">Total: {{ getTotal }} $</span>
+    <span class="total">Total: {{ total }} $</span>
     <input class="order-input" placeholder="Name" v-model="name" />
     <input class="order-input" placeholder="Phone" v-model="phone" />
     <textarea class="order-input" placeholder="Address" v-model="address" ></textarea>
@@ -26,20 +26,20 @@ export default {
     }
   },
   methods: {
-    order() {
+    async order() {
       const token = localStorage.getItem('token');
 
       let products = [];
-      this.basketList.forEach((val, item) => {
-        products.push(val._id)
+      this.basketList.forEach((val) => {
+        products.push(val.id)
       });
 
       const data = {
         name: this.name,
         phone: this.phone,
         address: this.address,
-        products: [],
-        total_price: this.getTotal
+        products: products,
+        total_price: this.total
       };
 
       const response = await fetch(`${process.env.VUE_APP_API_URL}/orders`, {
@@ -51,6 +51,23 @@ export default {
         body: JSON.stringify(data)
       });
       const order = await response.json();
+      if (order.status == 'ordered') {
+        localStorage.removeItem('basket');
+        localStorage.removeItem('products');
+
+        window.location.href = '/';
+      }
+    }
+  },
+  computed: {
+    total() {
+      let total = 0;
+      
+      this.basketList.forEach(val => {
+        total += parseInt(val.price)
+      });
+
+      return total;
     }
   }
 }

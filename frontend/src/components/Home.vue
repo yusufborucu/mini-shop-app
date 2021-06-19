@@ -2,7 +2,7 @@
   <div class="home-container">
     <h1 class="title" @click="home()">Mini Shop App</h1>
     <input type="text" class="search" placeholder="Search..." v-model="searchText" v-on:keyup.13="search()" />
-    <span class="product-count">{{ getProductCountInBasket }}</span>
+    <span class="product-count">{{ productCount }}</span>
     <button class="basket-btn" @click="$router.push('basket')">Basket</button>
     <button class="orders-btn" @click="$router.push('orders')">Orders</button>
     <button class="logout-btn" @click="logout()">Logout</button>
@@ -21,11 +21,27 @@
     data() {
       return {
         searchText: this.$route.query.search || '',
-        page: this.$route.query.page || 1
+        page: this.$route.query.page || 1,
+        productCount: 0
       }
     },
     components: {
       Products
+    },
+    async created() {
+      const token = localStorage.getItem('token');
+
+      const baskets = await fetch(`${process.env.VUE_APP_API_URL}/baskets`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        }
+      });
+      const basketResponse = await baskets.json();
+
+      if (basketResponse)
+        this.productCount = basketResponse.products.length;
     },
     methods: {
       logout() {

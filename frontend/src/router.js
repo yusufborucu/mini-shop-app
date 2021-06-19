@@ -14,7 +14,7 @@ const routes = [
   { path: '/', component: Home, meta: { requiresAuth: true } },  
   { path: '/basket', component: Basket, meta: { requiresAuth: true } },
   { path: '/orders', component: Orders, meta: { requiresAuth: true } },
-  { path: '/order-detail', component: OrderDetail, meta: { requiresAuth: true } }
+  { path: '/order-detail/:id', component: OrderDetail, meta: { requiresAuth: true } }
 ]
 
 export const router = new VueRouter({

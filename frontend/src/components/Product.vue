@@ -11,26 +11,45 @@
   export default {
     props: ['product'],
     methods: {
-      addToBasket() {
+      async addToBasket() {
         let basket = JSON.parse(localStorage.getItem('basket'));
+        let products = JSON.parse(localStorage.getItem('products'));
 
         let id = this.product._id;        
         let name = this.product.name;
         let price = this.product.price;
         let image = this.product.image;
-        let quantity = 1;
 
         if (!basket) {
           basket = [];
+        }      
+        
+        if (!products) {
+          products = [];
         }
 
         const itemIndexInBasket = basket.findIndex(basketEntry => basketEntry.id === id);
         if (itemIndexInBasket !== -1) {
-          basket[itemIndexInBasket].quantity++;
+          alert('Bu üründen sepette zaten var.');
+          return;
         } else {
-          basket.push({id, name, price, image, quantity});
+          basket.push({id, name, price, image});
+          products.push(id);  
         } 
         localStorage.setItem('basket', JSON.stringify(basket));
+        localStorage.setItem('products', JSON.stringify(products));
+
+        const token = localStorage.getItem('token');
+        const data = { products };
+
+        await fetch(`${process.env.VUE_APP_API_URL}/baskets`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token
+          },
+          body: JSON.stringify(data)
+        });
       }
     }
   }

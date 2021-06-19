@@ -22,8 +22,9 @@ router.post('/login', (req, res) => {
         } else {
           let userId = user._id;
           const token = jwt.sign({ userId }, process.env.API_SECRET_KEY, { expiresIn: 600 });
+          const role = user.role;
 
-          res.json({ status: true, token });
+          res.json({ status: true, token, role });
         }
       });
     }

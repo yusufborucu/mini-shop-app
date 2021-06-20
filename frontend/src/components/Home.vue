@@ -1,3 +1,63 @@
+<script>
+  import Products from './Products'
+
+  export default {
+    data() {
+      return {
+        searchText: this.$route.query.search || '',
+        page: this.$route.query.page || 1,
+        productCount: 0
+      }
+    },
+    components: {
+      Products
+    },
+    async created() {
+      const token = localStorage.getItem('token')
+
+      const baskets = await fetch(`${process.env.VUE_APP_API_URL}/baskets`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        }
+      })
+      const basketResponse = await baskets.json()
+
+      if (basketResponse)
+        this.productCount = basketResponse.products.length
+    },
+    methods: {
+      logout() {
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
+
+        window.location.href = 'login'
+      },
+      home() {
+        window.location.href = '/'
+      },
+      search() {
+        window.location.href = '?search=' + this.searchText
+      },
+      previousPage() {
+        this.page--
+        if (this.searchText == '')
+          window.location.href = '?page=' + this.page
+        else
+          window.location.href = '?page=' + this.page + '&search=' + this.searchText
+      },
+      nextPage() {
+        this.page++
+        if (this.searchText == '')
+          window.location.href = '?page=' + this.page
+        else
+          window.location.href = '?page=' + this.page + '&search=' + this.searchText
+      }
+    }
+  }
+</script>
+
 <template>
   <div class="home-container">
     <h1 class="title" @click="home()">Mini Shop App</h1>
@@ -13,66 +73,6 @@
     </div>
   </div>
 </template>
-
-<script>
-  import Products from './Products';
-
-  export default {
-    data() {
-      return {
-        searchText: this.$route.query.search || '',
-        page: this.$route.query.page || 1,
-        productCount: 0
-      }
-    },
-    components: {
-      Products
-    },
-    async created() {
-      const token = localStorage.getItem('token');
-
-      const baskets = await fetch(`${process.env.VUE_APP_API_URL}/baskets`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token
-        }
-      });
-      const basketResponse = await baskets.json();
-
-      if (basketResponse)
-        this.productCount = basketResponse.products.length;
-    },
-    methods: {
-      logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-
-        window.location.href = 'login';
-      },
-      home() {
-        window.location.href = '/';
-      },
-      search() {
-        window.location.href = '?search=' + this.searchText;
-      },
-      previousPage() {
-        this.page--;
-        if (this.searchText == '')
-          window.location.href = '?page=' + this.page;
-        else
-          window.location.href = '?page=' + this.page + '&search=' + this.searchText;
-      },
-      nextPage() {
-        this.page++;
-        if (this.searchText == '')
-          window.location.href = '?page=' + this.page;
-        else
-          window.location.href = '?page=' + this.page + '&search=' + this.searchText;
-      }
-    }
-  }
-</script>
 
 <style scoped>
   .home-container {

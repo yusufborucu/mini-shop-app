@@ -1,3 +1,61 @@
+<script>
+export default {
+  data() {
+    return {
+      basketList: JSON.parse(localStorage.getItem('basket')) || [],
+      name: '',
+      phone: '',
+      address: ''
+    }
+  },
+  methods: {
+    async order() {
+      const token = localStorage.getItem('token')
+
+      let products = []
+      this.basketList.forEach((val) => {
+        products.push(val.id)
+      })
+
+      const data = {
+        name: this.name,
+        phone: this.phone,
+        address: this.address,
+        products: products,
+        total_price: this.total
+      }
+
+      const response = await fetch(`${process.env.VUE_APP_API_URL}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        },
+        body: JSON.stringify(data)
+      })
+      const order = await response.json()
+      if (order.status == 'ordered') {
+        localStorage.removeItem('basket')
+        localStorage.removeItem('products')
+
+        window.location.href = '/'
+      }
+    }
+  },
+  computed: {
+    total() {
+      let total = 0
+      
+      this.basketList.forEach(val => {
+        total += parseInt(val.price)
+      })
+
+      return total
+    }
+  }
+}
+</script>
+
 <template>
   <div class="basket-container">
     <button class="back-btn" @click="$router.push('/')">Back</button>
@@ -14,64 +72,6 @@
     <button class="order-btn" @click="order()">Order</button>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      basketList: JSON.parse(localStorage.getItem('basket')) || [],
-      name: '',
-      phone: '',
-      address: ''
-    }
-  },
-  methods: {
-    async order() {
-      const token = localStorage.getItem('token');
-
-      let products = [];
-      this.basketList.forEach((val) => {
-        products.push(val.id)
-      });
-
-      const data = {
-        name: this.name,
-        phone: this.phone,
-        address: this.address,
-        products: products,
-        total_price: this.total
-      };
-
-      const response = await fetch(`${process.env.VUE_APP_API_URL}/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token
-        },
-        body: JSON.stringify(data)
-      });
-      const order = await response.json();
-      if (order.status == 'ordered') {
-        localStorage.removeItem('basket');
-        localStorage.removeItem('products');
-
-        window.location.href = '/';
-      }
-    }
-  },
-  computed: {
-    total() {
-      let total = 0;
-      
-      this.basketList.forEach(val => {
-        total += parseInt(val.price)
-      });
-
-      return total;
-    }
-  }
-}
-</script>
 
 <style scoped>
   .basket-container {

@@ -1,12 +1,3 @@
-<template>
-  <div class="login-container">
-    <h2>Mini Shop App</h2>
-    <input type="text" v-model="email" class="login-input" placeholder="E-Mail Address" />
-    <input type="password" v-model="password" class="login-input" placeholder="Password" />
-    <button class="login-btn" @click="login()">Login</button>
-  </div>
-</template>
-
 <script>
   export default {
     data() {
@@ -20,7 +11,7 @@
         const data = {
           email: this.email,
           password: this.password
-        };
+        }
 
         const response = await fetch(`${process.env.VUE_APP_API_URL}/auth/login`, {
           method: 'POST',
@@ -28,22 +19,31 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(data)
-        });
-        const login = await response.json();
+        })
+        const login = await response.json()
 
         if (!login.status) {
-          alert(login.message);
+          alert(login.message)
         } else {
-          localStorage.setItem('token', login.token);
-          localStorage.setItem('role', login.role);
+          localStorage.setItem('token', login.token)
+          localStorage.setItem('role', login.role)
 
-          let path = login.role == 'user' ? '/' : 'orders';
-          window.location.href = path;
+          let path = login.role == 'user' ? '/' : 'orders'
+          window.location.href = path
         }
       }
     }
   }
 </script>
+
+<template>
+  <div class="login-container">
+    <h2>Mini Shop App</h2>
+    <input type="text" v-model="email" class="login-input" placeholder="E-Mail Address" />
+    <input type="password" v-model="password" class="login-input" placeholder="Password" />
+    <button class="login-btn" @click="login()">Login</button>
+  </div>
+</template>
 
 <style scoped>
   .login-container {

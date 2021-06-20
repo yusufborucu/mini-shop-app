@@ -1,46 +1,37 @@
-<template>
-  <div class="product-container">    
-    <img class="image" :src="this.product.image" />
-    <span class="name">{{ this.product.name }}</span>
-    <span class="price">{{ this.product.price }} $</span>
-    <button class="plus-btn" @click="addToBasket()">Add to basket</button>
-  </div>
-</template>
-
 <script>
   export default {
     props: ['product'],
     methods: {
       async addToBasket() {
-        let basket = JSON.parse(localStorage.getItem('basket'));
-        let products = JSON.parse(localStorage.getItem('products'));
+        let basket = JSON.parse(localStorage.getItem('basket'))
+        let products = JSON.parse(localStorage.getItem('products'))
 
-        let id = this.product._id;        
-        let name = this.product.name;
-        let price = this.product.price;
-        let image = this.product.image;
+        let id = this.product._id
+        let name = this.product.name
+        let price = this.product.price
+        let image = this.product.image
 
         if (!basket) {
-          basket = [];
+          basket = []
         }      
         
         if (!products) {
-          products = [];
+          products = []
         }
 
-        const itemIndexInBasket = basket.findIndex(basketEntry => basketEntry.id === id);
+        const itemIndexInBasket = basket.findIndex(basketEntry => basketEntry.id === id)
         if (itemIndexInBasket !== -1) {
-          alert('Bu üründen sepette zaten var.');
-          return;
+          alert('You already have this product in your cart.')
+          return
         } else {
-          basket.push({id, name, price, image});
-          products.push(id);  
+          basket.push({id, name, price, image})
+          products.push(id)
         } 
-        localStorage.setItem('basket', JSON.stringify(basket));
-        localStorage.setItem('products', JSON.stringify(products));
+        localStorage.setItem('basket', JSON.stringify(basket))
+        localStorage.setItem('products', JSON.stringify(products))
 
-        const token = localStorage.getItem('token');
-        const data = { products };
+        const token = localStorage.getItem('token')
+        const data = { products }
 
         await fetch(`${process.env.VUE_APP_API_URL}/baskets`, {
           method: 'PUT',
@@ -49,11 +40,20 @@
             'x-access-token': token
           },
           body: JSON.stringify(data)
-        });
+        })
       }
     }
   }
 </script>
+
+<template>
+  <div class="product-container">    
+    <img class="image" :src="this.product.image" />
+    <span class="name">{{ this.product.name }}</span>
+    <span class="price">{{ this.product.price }} $</span>
+    <button class="plus-btn" @click="addToBasket()">Add to basket</button>
+  </div>
+</template>
 
 <style scoped>
   .product-container {

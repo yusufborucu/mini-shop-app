@@ -1,3 +1,53 @@
+<script>
+export default {
+  data() {
+    return {
+      order: {},
+      isAdmin: localStorage.getItem('role') == 'admin',
+      selectedStatus: ''
+    }
+  },
+  async created() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params.id
+
+    const order = await fetch(`${process.env.VUE_APP_API_URL}/orders/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token
+      }
+    })
+    const orderResponse = await order.json()
+    this.order = orderResponse
+    this.selectedStatus = orderResponse.status
+  },
+  methods: {
+    async editStatus() {
+      const token = localStorage.getItem('token')
+      const id = this.$route.params.id
+
+      const data = {
+        status: this.selectedStatus
+      }
+
+      const response = await fetch(`${process.env.VUE_APP_API_URL}/orders/change_order_status/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        },
+        body: JSON.stringify(data)
+      })
+      const changeStatus = await response.json()
+      if (changeStatus.status == this.selectedStatus) {
+        window.location.href = '/orders'
+      }
+    }
+  }
+}
+</script>
+
 <template>
   <div class="order-detail-container">
     <button class="back-btn" @click="$router.push('/orders')">Back</button>
@@ -20,56 +70,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      order: {},
-      isAdmin: localStorage.getItem('role') == 'admin',
-      selectedStatus: ''
-    }
-  },
-  async created() {
-    const token = localStorage.getItem('token');
-    const id = this.$route.params.id;
-
-    const order = await fetch(`${process.env.VUE_APP_API_URL}/orders/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': token
-      }
-    });
-    const orderResponse = await order.json();
-    this.order = orderResponse;
-    this.selectedStatus = orderResponse.status;
-  },
-  methods: {
-    async editStatus() {
-      const token = localStorage.getItem('token');
-      const id = this.$route.params.id;
-
-      const data = {
-        status: this.selectedStatus
-      }
-
-      const response = await fetch(`${process.env.VUE_APP_API_URL}/orders/change_order_status/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token
-        },
-        body: JSON.stringify(data)
-      });
-      const changeStatus = await response.json();
-      if (changeStatus.status == this.selectedStatus) {
-        window.location.href = '/orders';
-      }
-    }
-  }
-}
-</script>
 
 <style scoped>
   .order-detail-container {

@@ -1,3 +1,48 @@
+<script>
+export default {
+  data() {
+    return {
+      orders: [],
+      isAdmin: localStorage.getItem('role') == 'admin'
+    }
+  },
+  async created() {
+    const token = localStorage.getItem('token')
+    const role = localStorage.getItem('role')
+
+    if (role == 'user') {
+      const orders = await fetch(`${process.env.VUE_APP_API_URL}/orders`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        }
+      })
+      const ordersResponse = await orders.json()
+      this.orders = ordersResponse
+    } else {
+      const orders = await fetch(`${process.env.VUE_APP_API_URL}/orders/orders_placed`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        }
+      })
+      const ordersResponse = await orders.json()
+      this.orders = ordersResponse
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('role')
+
+      window.location.href = 'login'
+    }
+  }
+}
+</script>
+
 <template>
   <div class="orders-container">
     <button class="logout-btn" v-if="isAdmin" @click="logout()">Logout</button>
@@ -15,51 +60,6 @@
     </ul>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      orders: [],
-      isAdmin: localStorage.getItem('role') == 'admin'
-    }
-  },
-  async created() {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-
-    if (role == 'user') {
-      const orders = await fetch(`${process.env.VUE_APP_API_URL}/orders`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token
-        }
-      });
-      const ordersResponse = await orders.json();
-      this.orders = ordersResponse;
-    } else {
-      const orders = await fetch(`${process.env.VUE_APP_API_URL}/orders/orders_placed`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token
-        }
-      });
-      const ordersResponse = await orders.json();
-      this.orders = ordersResponse;
-    }
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('role');
-
-      window.location.href = 'login';
-    }
-  }
-}
-</script>
 
 <style scoped>
   .orders-container {

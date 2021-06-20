@@ -24,14 +24,14 @@ export const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    let token = localStorage.getItem("token");
-    let role = localStorage.getItem('role');
+    let token = localStorage.getItem("token")
+    let role = localStorage.getItem('role')
     if (!token || !role) {
-      next('/login');
+      next('/login')
     } else {
-      next();
+      next()
     }
   } else {
-    next();
+    next()
   }
-});
+})

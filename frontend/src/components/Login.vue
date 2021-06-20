@@ -28,8 +28,7 @@
           localStorage.setItem('token', login.token)
           localStorage.setItem('role', login.role)
 
-          let path = login.role == 'user' ? '/' : 'orders'
-          window.location.href = path
+          window.location.href = '/'
         }
       }
     }

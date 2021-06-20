@@ -21,6 +21,7 @@ Simple shopping app with MEVN Stack
 - Deploy: Heroku, Netlify
 
 ## installation
+- Backend;
 ```
 cd backend
 ```
@@ -31,6 +32,7 @@ npm install
 npm run start:dev
 ```
 
+- Frontend;
 ```
 cd frontend
 ```

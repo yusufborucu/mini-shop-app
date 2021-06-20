@@ -1,9 +1,0 @@
-language: node_js
-node_js:
-  - 12
-before_install:
-  - cd backend
-  - npm install
-  - export NODE_ENV=production
-script:
-  - npm run test

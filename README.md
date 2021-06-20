@@ -1,6 +1,6 @@
 # mini-shop-app
 
-Simple shopping app
+Simple shopping app with MEVN Stack
 
 ## features
 - there are users with user and admin role
@@ -21,10 +21,22 @@ Simple shopping app
 - Deploy: Heroku, Netlify
 
 ## installation
+```
 cd backend
+```
+```
 npm install
+```
+```
 npm run start:dev
+```
 
+```
 cd frontend
+```
+```
 npm install
+```
+```
 npm run serve
+```

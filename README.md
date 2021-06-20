@@ -38,8 +38,8 @@ npm run serve
 
 ### User Infos
 - user: 
-  - email: user@mail.com 
-  - password: 123456
+  - user@mail.com 
+  - 123456
 - admin: 
   - admin@mail.com 
-  - password: 123456
+  - 123456

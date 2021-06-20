@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const OrderSchema = new Schema({
   user_id: {
@@ -33,6 +33,6 @@ const OrderSchema = new Schema({
     enum: ['ordered', 'preparing', 'on_way', 'delivered'],
     default: 'ordered'
   }
-});
+})
 
-module.exports = mongoose.model('order', OrderSchema);
+module.exports = mongoose.model('order', OrderSchema)

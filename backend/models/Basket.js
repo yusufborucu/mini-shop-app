@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const BasketSchema = new Schema({
   user_id: {
@@ -12,6 +12,6 @@ const BasketSchema = new Schema({
       ref: 'product'
     }
   ]
-});
+})
 
-module.exports = mongoose.model('basket', BasketSchema);
+module.exports = mongoose.model('basket', BasketSchema)

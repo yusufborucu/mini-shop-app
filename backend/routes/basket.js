@@ -1,30 +1,30 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-const Basket = require('../models/Basket');
+const Basket = require('../models/Basket')
 
 router.get('/', async (req, res) => {
-  const user_id = req.decode.userId;
+  const user_id = req.decode.userId
 
-  const basket = await Basket.findOne({ user_id });
+  const basket = await Basket.findOne({ user_id })
 
-  res.json(basket);
-});
+  res.json(basket)
+})
 
 router.put('/', async (req, res) => {
-  const user_id = req.decode.userId;
-  const products = req.body.products;
+  const user_id = req.decode.userId
+  const products = req.body.products
 
-  let basket = await Basket.findOne({ user_id });
+  let basket = await Basket.findOne({ user_id })
   
   if (basket) {
-    basket.products = products;
+    basket.products = products
   } else {    
-    basket = new Basket({ user_id, products });
+    basket = new Basket({ user_id, products })
   }
-  await basket.save();
+  await basket.save()
 
-  res.json(basket);
-});
+  res.json(basket)
+})
 
-module.exports = router;
+module.exports = router

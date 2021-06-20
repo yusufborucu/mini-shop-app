@@ -1,9 +1,9 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-chai.should();
-const server = require('../app');
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+chai.should()
+const server = require('../app')
 
-chai.use(chaiHttp);
+chai.use(chaiHttp)
 
 describe('/auth tests', () => {
   it('/login POST', (done) => {
@@ -16,9 +16,9 @@ describe('/auth tests', () => {
       .post('/auth/login')
       .send(data)
       .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.property('token');
-        done();
+        res.should.have.status(200)
+        res.body.should.have.property('token')
+        done()
       })
-  });
-});
+  })
+})

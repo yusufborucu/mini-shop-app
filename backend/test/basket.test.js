@@ -1,11 +1,11 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-chai.should();
-const server = require('../app');
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+chai.should()
+const server = require('../app')
 
-chai.use(chaiHttp);
+chai.use(chaiHttp)
 
-let token;
+let token
 
 describe('/baskets tests', () => {
   before((done) => {
@@ -18,21 +18,21 @@ describe('/baskets tests', () => {
       .post('/auth/login')
       .send(data)
       .end((err, res) => {
-        token = res.body.token;
-        done();
-      });
-  });
+        token = res.body.token
+        done()
+      })
+  })
 
   it('/ GET', (done) => {
     chai.request(server)
       .get('/baskets')
       .set('x-access-token', token)
       .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('object');
-        done();
-      });      
-  });
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        done()
+      })
+  })
 
   it('/ PUT', (done) => {
     const data = {
@@ -47,10 +47,10 @@ describe('/baskets tests', () => {
       .set('x-access-token', token)
       .send(data)
       .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.property('user_id');
-        res.body.should.have.property('products');
-        done();
-      });
+        res.should.have.status(200)
+        res.body.should.have.property('user_id')
+        res.body.should.have.property('products')
+        done()
+      })
   })
-});
+})

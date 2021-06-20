@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
   email: {
@@ -15,6 +15,6 @@ const UserSchema = new Schema({
     enum: ['user', 'admin'],
     default: 'user'
   }
-});
+})
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('user', UserSchema)

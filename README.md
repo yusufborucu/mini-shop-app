@@ -21,24 +21,25 @@ Simple shopping app with MEVN Stack
 - Deploy: Heroku, Netlify
 
 ## installation
-- Backend;
+
+### Backend
 ```
 cd backend
-```
-```
 npm install
-```
-```
 npm run start:dev
 ```
 
-- Frontend;
+### Frontend
 ```
 cd frontend
-```
-```
 npm install
-```
-```
 npm run serve
 ```
+
+### User Infos
+- user: 
+  - email: user@mail.com 
+  - password: 123456
+- admin: 
+  - admin@mail.com 
+  - password: 123456

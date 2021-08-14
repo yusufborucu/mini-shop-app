@@ -23,7 +23,7 @@ app.use('/baskets', verifyToken, basketRouter)
 app.use('/orders', verifyToken, orderRouter)
 
 app.listen(PORT, () => {
-  console.log('server is running...')
+  console.log('server is running at ' + PORT)
 })
 
 app.get('/', (req, res) => {
